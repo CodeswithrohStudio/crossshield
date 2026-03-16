@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, Suspense } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { Shield, ChevronRight, Check } from 'lucide-react';
 import { AssetGrid } from '../../../components/AssetGrid';
@@ -8,6 +8,7 @@ import { LeverageSlider } from '../../../components/LeverageSlider';
 import { RiskAnalysisPanel } from '../../../components/RiskAnalysisPanel';
 import { Asset, ASSETS } from '../../../lib/assets';
 import { useOpenShield } from '../../../hooks/useVault';
+import { useAccount } from 'wagmi';
 import { cn } from '../../../lib/utils';
 
 const STEPS = ['Choose Asset', 'Set Leverage', 'Risk Analysis', 'Confirm'];
@@ -15,20 +16,35 @@ const STEPS = ['Choose Asset', 'Set Leverage', 'Risk Analysis', 'Confirm'];
 function NewShieldContent() {
   const params = useSearchParams();
   const router = useRouter();
+  const { address } = useAccount();
   const initialAssetId = Number(params.get('assetId') ?? 0);
   const initialLeverage = Number(params.get('leverage') ?? 1);
 
   const [step, setStep] = useState(1);
   const [selectedAsset, setSelectedAsset] = useState<Asset>(ASSETS[initialAssetId] ?? ASSETS[0]);
   const [leverage, setLeverage] = useState(initialLeverage || 1);
-  const { openShield, isPending } = useOpenShield();
+  const [txError, setTxError] = useState('');
+  const { openShield, isPending, isConfirming, isSuccess } = useOpenShield();
+
+  // Redirect once TX is confirmed on-chain
+  useEffect(() => {
+    if (isSuccess) {
+      router.push('/dashboard');
+    }
+  }, [isSuccess, router]);
 
   async function handleOpen() {
+    setTxError('');
     try {
-      await openShield(selectedAsset.id, leverage);
-      router.push('/dashboard');
-    } catch (e) {
+      await openShield(selectedAsset.id, leverage, address ? {
+        walletAddress: address,
+        assetName: selectedAsset.name,
+        assetEmoji: selectedAsset.emoji,
+      } : undefined);
+      // Router push is handled by the isSuccess effect above
+    } catch (e: any) {
       console.error('Failed to open shield:', e);
+      setTxError(e?.shortMessage ?? e?.message ?? 'Transaction failed');
     }
   }
 
@@ -152,14 +168,19 @@ function NewShieldContent() {
               </div>
             </div>
           </div>
+          {txError && (
+            <div className="bg-red-400/10 border border-red-400/20 rounded-lg px-4 py-2">
+              <p className="text-xs text-red-400">{txError}</p>
+            </div>
+          )}
           <div className="flex gap-3">
-            <button onClick={() => setStep(3)} className="flex-1 bg-muted text-muted-foreground py-3 rounded-xl text-sm hover:bg-accent transition-colors">Back</button>
+            <button onClick={() => setStep(3)} disabled={isPending || isConfirming} className="flex-1 bg-muted text-muted-foreground py-3 rounded-xl text-sm hover:bg-accent transition-colors disabled:opacity-50">Back</button>
             <button
               onClick={handleOpen}
-              disabled={isPending}
+              disabled={isPending || isConfirming}
               className="flex-1 bg-primary text-primary-foreground py-3 rounded-xl text-sm font-medium hover:bg-primary/90 transition-colors disabled:opacity-50"
             >
-              {isPending ? 'Opening...' : 'Open Shield'}
+              {isConfirming ? 'Confirming…' : isPending ? 'Opening…' : 'Open Shield'}
             </button>
           </div>
         </div>

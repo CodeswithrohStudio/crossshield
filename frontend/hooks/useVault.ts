@@ -2,29 +2,50 @@
 
 import { useReadContract, useWriteContract, useWaitForTransactionReceipt, useAccount } from 'wagmi';
 import { parseUnits, maxUint256 } from 'viem';
+import { useState } from 'react';
 import { CONTRACT_ADDRESSES, VAULT_ABI, ERC20_ABI } from '../lib/contracts';
 
 export function useVaultDeposit() {
   const { address } = useAccount();
-  const { data: hash, writeContractAsync, isPending } = useWriteContract();
-  const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({ hash });
+  const { writeContractAsync, isPending } = useWriteContract();
+  const [depositHash, setDepositHash] = useState<`0x${string}` | undefined>();
+  const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({ hash: depositHash });
 
   async function deposit(amountUsdc: number) {
     const amount = parseUnits(amountUsdc.toString(), 6);
-    // First approve
+
+    // Approve first
     await writeContractAsync({
       address: CONTRACT_ADDRESSES.MockUSDC,
       abi: ERC20_ABI,
       functionName: 'approve',
       args: [CONTRACT_ADDRESSES.CrossShieldVault, maxUint256],
     });
-    // Then deposit
-    return writeContractAsync({
+
+    // Then deposit — capture hash
+    const hash = await writeContractAsync({
       address: CONTRACT_ADDRESSES.CrossShieldVault,
       abi: VAULT_ABI,
       functionName: 'depositUSDC',
       args: [amount],
     });
+    setDepositHash(hash);
+
+    // Save to MongoDB (fire and forget)
+    if (address) {
+      fetch('/api/deposits', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          walletAddress: address,
+          txHash: hash,
+          amount: amountUsdc,
+          maturityDays: 365,
+        }),
+      }).catch(console.error);
+    }
+
+    return hash;
   }
 
   return { deposit, isPending, isConfirming, isSuccess };
@@ -56,18 +77,44 @@ export function useYieldAvailable() {
 
 export function useOpenShield() {
   const { writeContractAsync, isPending } = useWriteContract();
-  const { data: hash } = useWriteContract();
+  const [shieldHash, setShieldHash] = useState<`0x${string}` | undefined>();
+  const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({ hash: shieldHash });
 
-  async function openShield(assetId: number, leverage: number) {
-    return writeContractAsync({
+  async function openShield(
+    assetId: number,
+    leverage: number,
+    meta?: { walletAddress: string; assetName: string; assetEmoji: string }
+  ) {
+    const hash = await writeContractAsync({
       address: CONTRACT_ADDRESSES.CrossShieldVault,
       abi: VAULT_ABI,
       functionName: 'openShield',
       args: [assetId, leverage],
     });
+    setShieldHash(hash);
+
+    // Save to MongoDB (fire and forget)
+    if (meta) {
+      fetch('/api/shields', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          walletAddress: meta.walletAddress,
+          txHash: hash,
+          assetId,
+          assetName: meta.assetName,
+          assetEmoji: meta.assetEmoji,
+          leverage,
+          entryPrice: '0',
+          marginUsed: '0',
+        }),
+      }).catch(console.error);
+    }
+
+    return hash;
   }
 
-  return { openShield, isPending };
+  return { openShield, isPending, isConfirming, isSuccess };
 }
 
 export function useCloseShield() {

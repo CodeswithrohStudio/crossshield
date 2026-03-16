@@ -5,7 +5,7 @@
       "name": "frontend",
       "runtimeExecutable": "node_modules/.bin/next",
       "runtimeArgs": ["dev"],
-      "cwd": "/Users/rohitpurkait/Work/Personal/hackathons/crossshield/.claude/worktrees/jolly-swanson/frontend",
+      "cwd": "/Users/rohitpurkait/Work/Personal/hackathons/crossshield/frontend",
       "port": 3000,
       "autoPort": true
     }
