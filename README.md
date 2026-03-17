@@ -293,13 +293,11 @@ All Solidity contracts are deployed on **Polkadot Asset Hub** (EVM layer):
 
 | Contract | Address |
 |---|---|
-| MockUSDC | `Pending deployment` |
-| RWAOracle | `Pending deployment` |
-| XCMBridge | `Pending deployment` |
-| TxInterceptor | `Pending deployment` |
-| CrossShieldVault | `Pending deployment` |
-
-> **To deploy:** Fund `0xea29cfACC192cF3C7d0c3f94a28Cf9f415344e14` with DEV at [faucet.moonbeam.network](https://faucet.moonbeam.network), then run `npm run deploy:moonbase && npm run seed:moonbase`
+| MockUSDC | [`0xD07f07f038c202F8DEbc4345626466ef4AC93b99`](https://moonbase.moonscan.io/address/0xD07f07f038c202F8DEbc4345626466ef4AC93b99) |
+| RWAOracle | [`0xC93e5742BD4211e6ce34fE03dE16Ba99D94055F8`](https://moonbase.moonscan.io/address/0xC93e5742BD4211e6ce34fE03dE16Ba99D94055F8) |
+| XCMBridge | [`0x48C5aB1AFaF39029362DF4Dfd9b0A767e40E4DDE`](https://moonbase.moonscan.io/address/0x48C5aB1AFaF39029362DF4Dfd9b0A767e40E4DDE) |
+| TxInterceptor | [`0x3A56a216BE2706F7bA3b5A986EC4F627a512BD38`](https://moonbase.moonscan.io/address/0x3A56a216BE2706F7bA3b5A986EC4F627a512BD38) |
+| CrossShieldVault | [`0x9AecA7295CDF636B4f2CD7c8c12b24d2b8a61599`](https://moonbase.moonscan.io/address/0x9AecA7295CDF636B4f2CD7c8c12b24d2b8a61599) |
 
 ### Localhost (Development)
 
