@@ -262,9 +262,9 @@ Given risk profile and deposit amount, Claude returns the top 3 shields with rea
 ### Track 1: EVM Smart Contracts on Polkadot Hub
 
 All Solidity contracts are deployed on **Polkadot Asset Hub** (EVM layer):
-- Chain: Westend Asset Hub (testnet)
-- ChainId: `420420421`
-- RPC: `https://westend-asset-hub-eth-rpc.polkadot.io`
+- Chain: Moonbase Alpha (Moonbeam testnet, Polkadot parachain)
+- ChainId: `1287`
+- RPC: `https://rpc.api.moonbase.moonbeam.network`
 - MetaMask and wagmi work natively — no custom bridge needed
 
 ### Track 2: PVM + XCM
@@ -285,11 +285,11 @@ All Solidity contracts are deployed on **Polkadot Asset Hub** (EVM layer):
 
 ## Contract Addresses
 
-### Polkadot Asset Hub Westend (Testnet)
+### Moonbase Alpha — Moonbeam Testnet (Polkadot Parachain)
 
-> Network: `westend` | ChainId: `420420421`
-> RPC: `https://westend-asset-hub-eth-rpc.polkadot.io`
-> Explorer: `https://assethub-westend.subscan.io`
+> Network: `moonbase` | ChainId: `1287`
+> RPC: `https://rpc.api.moonbase.moonbeam.network`
+> Explorer: `https://moonbase.moonscan.io`
 
 | Contract | Address |
 |---|---|
@@ -299,7 +299,7 @@ All Solidity contracts are deployed on **Polkadot Asset Hub** (EVM layer):
 | TxInterceptor | `Pending deployment` |
 | CrossShieldVault | `Pending deployment` |
 
-> **To deploy:** Fund `0xea29cfACC192cF3C7d0c3f94a28Cf9f415344e14` with WND at [faucet.polkadot.io](https://faucet.polkadot.io/?parachain=1000), then run `npm run deploy:westend && npm run seed:westend`
+> **To deploy:** Fund `0xea29cfACC192cF3C7d0c3f94a28Cf9f415344e14` with DEV at [faucet.moonbeam.network](https://faucet.moonbeam.network), then run `npm run deploy:moonbase && npm run seed:moonbase`
 
 ### Localhost (Development)
 
@@ -337,17 +337,17 @@ All positions principal-protected. 150 asset × leverage combinations backtested
 - Node.js 18+
 - npm 9+
 - Rust + Cargo (for PVM ink! contract)
-- MetaMask with Polkadot Asset Hub Westend network added
+- MetaMask with Moonbase Alpha network added
 
-### Add Westend Asset Hub to MetaMask
+### Add Moonbase Alpha to MetaMask
 
 | Field | Value |
 |---|---|
-| Network Name | Polkadot Asset Hub Westend |
-| RPC URL | `https://westend-asset-hub-eth-rpc.polkadot.io` |
-| Chain ID | `420420421` |
-| Currency Symbol | `WND` |
-| Explorer | `https://assethub-westend.subscan.io` |
+| Network Name | Moonbase Alpha |
+| RPC URL | `https://rpc.api.moonbase.moonbeam.network` |
+| Chain ID | `1287` |
+| Currency Symbol | `DEV` |
+| Explorer | `https://moonbase.moonscan.io` |
 
 ### Installation
 
@@ -419,21 +419,21 @@ Test suite covers:
 
 ## Deployment
 
-### Deploy to Westend Testnet
+### Deploy to Moonbase Alpha (Moonbeam Testnet — Polkadot Parachain)
 
 ```bash
-# 1. Get WND from faucet — select "Asset Hub" (parachain 1000)
-#    https://faucet.polkadot.io/?parachain=1000
+# 1. Get DEV tokens from faucet
+#    https://faucet.moonbeam.network
 #    Deployer: 0xea29cfACC192cF3C7d0c3f94a28Cf9f415344e14
 
 # 2. Deploy all 5 contracts
-npm run deploy:westend
+npm run deploy:moonbase
 
 # 3. Seed oracle with 25 asset prices
-npm run seed:westend
+npm run seed:moonbase
 
 # 4. Add Westend addresses to frontend/.env.local
-NEXT_PUBLIC_NETWORK=westend
+NEXT_PUBLIC_NETWORK=moonbase
 NEXT_PUBLIC_MOCKUSDC=<deployed>
 NEXT_PUBLIC_RWAORACLE=<deployed>
 NEXT_PUBLIC_XCMBRIDGE=<deployed>
@@ -469,7 +469,7 @@ cargo contract build --release
 
 3. **Deep AI integration** — Claude API powers three distinct features: pre-transaction risk analysis (score + warnings before every on-chain action), natural language position creation via WhatsApp-style chat, and personalized recommendations from 150-entry backtested dataset.
 
-4. **Deployed on Polkadot Hub** — Targeting Westend Asset Hub EVM (chainId 420420421). Full MetaMask + wagmi v2 integration.
+4. **Deployed on Polkadot Hub** — Targeting Moonbase Alpha (chainId 1287), a Polkadot parachain with full Frontier EVM. Full MetaMask + wagmi v2 integration.
 
 ### Track 2: PVM Smart Contracts — Polkadot Native Functionality
 

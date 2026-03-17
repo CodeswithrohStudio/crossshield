@@ -2,19 +2,19 @@ import { createConfig, http } from 'wagmi';
 import { defineChain } from 'viem';
 import { injected } from 'wagmi/connectors';
 
-export const polkadotHub = defineChain({
-  id: 420420421,
-  name: 'Polkadot Asset Hub (Westend)',
-  nativeCurrency: { name: 'WND', symbol: 'WND', decimals: 18 },
+export const moonbaseAlpha = defineChain({
+  id: 1287,
+  name: 'Moonbase Alpha',
+  nativeCurrency: { name: 'DEV', symbol: 'DEV', decimals: 18 },
   rpcUrls: {
     default: {
-      http: ['https://westend-asset-hub-eth-rpc.polkadot.io'],
+      http: ['https://rpc.api.moonbase.moonbeam.network'],
     },
   },
   blockExplorers: {
     default: {
-      name: 'Subscan',
-      url: 'https://assethub-westend.subscan.io',
+      name: 'Moonscan',
+      url: 'https://moonbase.moonscan.io',
     },
   },
 });
@@ -31,13 +31,13 @@ export const localnet = defineChain({
 });
 
 export const wagmiConfig = createConfig({
-  chains: [localnet, polkadotHub],
+  chains: [localnet, moonbaseAlpha],
   connectors: [
     injected(),
   ],
   transports: {
     [localnet.id]: http(),
-    [polkadotHub.id]: http(),
+    [moonbaseAlpha.id]: http(),
   },
   ssr: true,
 });

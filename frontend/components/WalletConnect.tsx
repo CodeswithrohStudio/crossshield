@@ -42,7 +42,7 @@ export function WalletConnect() {
       {open && (
         <div className="absolute right-0 top-12 bg-white border border-gray-100 rounded-xl shadow-xl p-2 min-w-[200px] z-50">
           <div className="px-3 py-2 text-xs text-muted-foreground border-b border-gray-100 mb-1">
-            Chain: {chainId === 31337 ? 'Localhost' : chainId === 420420421 ? 'Polkadot Hub' : `Unknown (${chainId})`}
+            Chain: {chainId === 31337 ? 'Localhost' : chainId === 1287 ? 'Moonbase Alpha' : `Unknown (${chainId})`}
           </div>
           <button
             onClick={() => { claimFaucet(); setOpen(false); }}

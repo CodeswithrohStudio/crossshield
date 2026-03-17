@@ -6,9 +6,11 @@
     "compile": "hardhat compile",
     "test": "hardhat test",
     "deploy:local": "hardhat run scripts/deploy.ts --network localhost",
-    "deploy:westend": "hardhat run scripts/deploy.ts --network westend",
+    "deploy:westend": "ts-node scripts/deploy-westend.ts",
+    "deploy:moonbase": "hardhat run scripts/deploy.ts --network moonbase",
     "seed": "hardhat run scripts/seed-oracle.ts --network localhost",
-    "seed:westend": "hardhat run scripts/seed-oracle.ts --network westend",
+    "seed:westend": "ts-node scripts/seed-westend.ts",
+    "seed:moonbase": "hardhat run scripts/seed-oracle.ts --network moonbase",
     "node": "hardhat node",
     "frontend": "cd frontend && npm run dev"
   },
