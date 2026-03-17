@@ -8,6 +8,7 @@
     "deploy:local": "hardhat run scripts/deploy.ts --network localhost",
     "deploy:westend": "hardhat run scripts/deploy.ts --network westend",
     "seed": "hardhat run scripts/seed-oracle.ts --network localhost",
+    "seed:westend": "hardhat run scripts/seed-oracle.ts --network westend",
     "node": "hardhat node",
     "frontend": "cd frontend && npm run dev"
   },

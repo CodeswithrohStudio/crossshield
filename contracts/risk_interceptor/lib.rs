@@ -14,7 +14,6 @@ mod risk_interceptor {
 
     /// Risk severity levels
     #[derive(Debug, Clone, PartialEq, Eq, Encode, Decode, TypeInfo)]
-    #[cfg_attr(feature = "std", derive(scale_info::TypeInfo))]
     pub enum RiskLevel {
         Low,
         Medium,
@@ -24,7 +23,6 @@ mod risk_interceptor {
 
     /// Risk analysis report returned for each transaction
     #[derive(Debug, Clone, Encode, Decode, TypeInfo)]
-    #[cfg_attr(feature = "std", derive(scale_info::TypeInfo))]
     pub struct RiskReport {
         /// 0–100 risk score (higher = riskier)
         pub score: u8,
