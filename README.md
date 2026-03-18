@@ -503,17 +503,4 @@ cargo contract build --release
 | Charts | Recharts |
 | Testing | Hardhat, Chai, Mocha |
 
----
 
-## Team
-
-**CrossShield** — built for the Polkadot Solidity Hackathon 2025
-
-- GitHub: [CodeswithrohStudio/crossshield](https://github.com/CodeswithrohStudio/crossshield)
-- Track: EVM Smart Contract Track (Track 1) + PVM Smart Contracts (Track 2)
-
----
-
-## License
-
-MIT © 2025 CrossShield
